@@ -1,31 +1,30 @@
 require 'yaml'
-require_relative 'permutation'
+require 'pony'
+require 'securerandom'
+require_relative 'participants'
 
 class SecretSanta
-  attr_reader :senders, :participants
+  attr_reader :participants
 
   def initialize
     @participants = YAML.load_file("lib/participants.yml")
-    @senders = participants.keys
+    SecureRandom.random_number(20).times do
+      @participants.shuffle!
+    end
   end
 
   def run
-    receipients = senders.shuffle
-    puts senders.inspect, receipients.inspect
-    puts Permutation.permutation_is_identical?(senders, receipients)
-    puts Permutation.forever_alone_participant?(Permutation.create_receipients_map(senders, receipients))
+    Participants.group_participants(participants).each do |group|
+      send_email group
+    end
   end
 
   private
 
-  def set_participants
-
-  end
-
-  def send_email
+  def send_email group
     Pony.mail(
-      to: "catalin.ionescu282@gmail.com",
-      subject: "[Secret Santa] Partenerul Tau",
+      to: "#{group.dig(:from, 'name')} <#{group.dig(:from, 'email')}>",
+      subject: "[Secret Santa] Woop Woop",
       via: :smtp,
       via_options: {
         address: "smtp.gmail.com",
@@ -37,8 +36,8 @@ class SecretSanta
         domain: "localhost.localdomain"
       },
       body: <<~BODY
-        This is the body of the email.
-        Blah Blah Blah
+        Your Secret Santa receipient will be #{group.dig(:to, 'name')}
+        Merry Christmas 🎅
       BODY
     )
   end
