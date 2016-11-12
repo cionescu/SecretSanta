@@ -1,5 +1,4 @@
-require "pony"
-require "yaml"
+require 'yaml'
 
 class SecretSanta
   attr_reader :senders, :participants
