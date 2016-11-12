@@ -9,6 +9,7 @@ GEM
     mime-types-data (3.2016.0521)
     pony (1.11)
       mail (>= 2.0)
+    rake (11.3.0)
     rspec (3.5.0)
       rspec-core (~> 3.5.0)
       rspec-expectations (~> 3.5.0)
@@ -28,6 +29,7 @@ PLATFORMS
 
 DEPENDENCIES
   pony
+  rake
   rspec
 
 BUNDLED WITH
