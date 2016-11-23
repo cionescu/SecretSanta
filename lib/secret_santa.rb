@@ -36,8 +36,11 @@ class SecretSanta
         domain: "localhost.localdomain"
       },
       body: <<~BODY
-        Your Secret Santa receipient will be #{group.dig(:to, 'name')}
-        Merry Christmas 🎅
+        #{group.dig(:from, 'name')},
+
+        Anul acesta tu vei fi Secret Santa pentru #{group.dig(:to, 'name')}.
+
+        Ho Ho Ho si Merry Christmas 🎅
       BODY
     )
   end
